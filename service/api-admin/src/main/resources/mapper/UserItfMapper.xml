@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pan.admin.mapper.UserItfMapper">
+
+    <resultMap id="BaseResultMap" type="com.pan.model.entity.UserItf">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="itfId" column="itf_id" jdbcType="BIGINT"/>
+        <result property="invokeCount" column="invoke_count" jdbcType="INTEGER"/>
+        <result property="leftCount" column="left_count" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,itf_id,
+        invoke_count,left_count,status,
+        create_time,update_time,deleted
+    </sql>
+    <update id="itfInvokeCountIncrement">
+        update user_itf
+        set left_count   = left_count - 1,
+            invoke_count = invoke_count + 1
+        where itf_id = #{itfId}
+          and user_id = #{userId}
+          and status = 0
+          and deleted = 0
+          and left_count > 0
+
+    </update>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pan.admin.mapper.ParamMapper">
+
+    <resultMap id="BaseResultMap" type="com.pan.model.entity.Param">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="itfId" column="itf_id" jdbcType="BIGINT"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="required" column="required" jdbcType="TINYINT"/>
+            <result property="dataType" column="data_type" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="paramType" column="param_type" jdbcType="TINYINT"/>
+            <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updaterId" column="updater_id" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,itf_id,parent_id,
+        name,required,data_type,
+        description,param_type,creator_id,
+        create_time,updater_id,update_time,
+        deleted
+    </sql>
+</mapper>

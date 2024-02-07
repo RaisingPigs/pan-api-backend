@@ -1,0 +1,2 @@
+# pan api client的springboot starter文件
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.pan.sdk.ApiClientConfig
