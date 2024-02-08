@@ -82,8 +82,8 @@ public class ItfServiceImpl
     public BaseResponse<Object> invokeItf(ItfInvokeBO itfInvokeBO) {
         MethodEnum method = itfInvokeBO.getMethod();
         String url = itfInvokeBO.getUrl();
-        Map<String, Object> queryParams = itfInvokeBO.getQueryParams();
-        String jsonBody = itfInvokeBO.getBodyParam();
+        Map<String, Object> queryParams = itfInvokeBO.getQueryParam();
+        Map<String, Object> jsonBody = itfInvokeBO.getBodyParam();
 
         User user = userService.getById(AuthUtils.getLoginUser().getId());
         ItfClient itfClient = new ItfClient(user.getAccessKey(), user.getSecretKey());

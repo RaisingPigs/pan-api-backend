@@ -25,7 +25,7 @@ public class ItfInvokeReq implements Serializable {
     /**
      * body参数
      */
-    private String bodyParam;
+    private Map<String, Object> bodyParam;
     
     private static final long serialVersionUID = 1L;
 }

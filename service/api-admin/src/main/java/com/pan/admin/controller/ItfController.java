@@ -9,7 +9,6 @@ import com.pan.common.constant.PageConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
-import com.pan.common.util.AuthUtils;
 import com.pan.model.bo.itf.ItfInvokeBO;
 import com.pan.model.converter.itf.ItfConverter;
 import com.pan.model.converter.itf.ItfVOConverter;
@@ -52,7 +51,7 @@ public class ItfController {
 
         Itf itf = ItfConverter.INSTANCE.toItf(itfAddReq);
         itfService.validItf(itf, true);
-        
+
         boolean save = itfService.save(itf);
         if (!save) {
             throw new BusinessException(ResultCode.SAVE_ERR);
@@ -186,13 +185,13 @@ public class ItfController {
             throw new BusinessException(ResultCode.SYSTEM_ERR, "只有下线的接口才能上线");
         }
 
-        ItfInvokeBO itfInvokeBO = new ItfInvokeBO(itf);
-        BaseResponse<Object> baseResponse = itfService.invokeItf(itfInvokeBO);
-        if (Objects.isNull(baseResponse)
-            || ResultCode.isSuccessful(baseResponse.getCode())) {
-            log.error("接口调用失败, 接口id: [{}], 返回值: [{}]", id, baseResponse);
-            throw new BusinessException(ResultCode.SYSTEM_ERR, "接口调用失败, 接口id: " + id);
-        }
+        // ItfInvokeBO itfInvokeBO = new ItfInvokeBO(itf);
+        // BaseResponse<Object> baseResponse = itfService.invokeItf(itfInvokeBO);
+        // if (Objects.isNull(baseResponse)
+        //     || ResultCode.isSuccessful(baseResponse.getCode())) {
+        //     log.error("接口调用失败, 接口id: [{}], 返回值: [{}]", id, baseResponse);
+        //     throw new BusinessException(ResultCode.SYSTEM_ERR, "接口调用失败, 接口id: " + id);
+        // }
 
         Itf itfUpdate = new Itf();
         itfUpdate.setId(id);
@@ -232,11 +231,11 @@ public class ItfController {
 
     @PostMapping("/invoke")
     public BaseResponse<?> invokeItf(
-        @RequestBody ItfInvokeReq itfInvokeRequest) {
-        if (itfInvokeRequest == null) {
+        @RequestBody ItfInvokeReq itfInvokeReq) {
+        if (itfInvokeReq == null) {
             throw new BusinessException(ResultCode.PARAMS_ERR);
         }
-        Long id = itfInvokeRequest.getId();
+        Long id = itfInvokeReq.getId();
         if (Objects.isNull(id) || id <= 0) {
             throw new BusinessException(ResultCode.PARAMS_ERR);
         }
@@ -249,7 +248,7 @@ public class ItfController {
             throw new BusinessException(ResultCode.SYSTEM_ERR, "该接口已下线");
         }
 
-        ItfInvokeBO itfInvokeBO = new ItfInvokeBO(itf, itfInvokeRequest);
+        ItfInvokeBO itfInvokeBO = new ItfInvokeBO(itf, itfInvokeReq);
         return itfService.invokeItf(itfInvokeBO);
     }
 

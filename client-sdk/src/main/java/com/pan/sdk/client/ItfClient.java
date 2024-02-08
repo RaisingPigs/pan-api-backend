@@ -38,11 +38,11 @@ public class ItfClient {
         return doHttp(url, HttpMethod.GET, queryParams, null);
     }
 
-    public String doPost(String url, Map<String, ?> queryParams, String bodyParam) {
+    public String doPost(String url, Map<String, ?> queryParams, Map<String, ?> bodyParam) {
         return doHttp(url, HttpMethod.POST, queryParams, bodyParam);
     }
 
-    private String doHttp(String url, HttpMethod method, Map<String, ?> queryParams, String bodyParam) {
+    private String doHttp(String url, HttpMethod method, Map<String, ?> queryParams, Map<String, ?> bodyParam) {
         String urlWithParams = expandQueryParams(url, queryParams);
         HttpHeaders headers = getHttpHeaders();
         HttpEntity<?> httpEntity;
