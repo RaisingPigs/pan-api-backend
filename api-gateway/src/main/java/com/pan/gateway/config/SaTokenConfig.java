@@ -11,7 +11,6 @@ import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.resp.ResultUtils;
 import com.pan.common.util.JSONUtils;
-import com.pan.gateway.handler.GlobalExceptionHandler;
 import com.pan.model.enums.user.RoleEnum;
 import com.pan.sdk.constant.HeaderConstant;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +55,6 @@ public class SaTokenConfig {
         "/api/admin/user-itf/check-invoke-auth"
     };
 
-    private final GlobalExceptionHandler globalExceptionHandler;
-
     // 注册 Sa-Token全局过滤器 
     @Bean
     public SaReactorFilter getSaReactorFilter() {
@@ -90,12 +87,12 @@ public class SaTokenConfig {
                 SaRouter.match(USER_CHECK_LIST)
                     .check(r -> StpUtil.checkRoleOr(RoleEnum.USER.getDesc(), RoleEnum.ADMIN.getDesc()))
                     .stop();
-                
+
                 // 角色校验
                 SaRouter.match(ADMIN_CHECK_LIST)
                     .check(r -> StpUtil.checkRole(RoleEnum.ADMIN.getDesc()))
                     .stop();
-                
+
                 // 登录校验
                 SaRouter.match(LOGIN_CHECK_LIST)
                     .check(r -> StpUtil.checkLogin())

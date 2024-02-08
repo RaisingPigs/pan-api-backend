@@ -1,8 +1,6 @@
 package com.pan.sdk.config;
 
 import com.pan.sdk.interceptor.HeaderRequestInterceptor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -26,14 +24,14 @@ public class RestTemplateUtils {
         restTemplate.setInterceptors(interceptors);
 
         changeMessageConverter2UTF8(restTemplate);
-            
+
         return restTemplate;
     }
 
     private static void changeMessageConverter2UTF8(RestTemplate restTemplate) {
         List<HttpMessageConverter<?>> list = restTemplate.getMessageConverters();
         for (HttpMessageConverter<?> httpMessageConverter : list) {
-            if(httpMessageConverter instanceof StringHttpMessageConverter) {
+            if (httpMessageConverter instanceof StringHttpMessageConverter) {
                 ((StringHttpMessageConverter) httpMessageConverter).setDefaultCharset(StandardCharsets.UTF_8);
                 break;
             }
