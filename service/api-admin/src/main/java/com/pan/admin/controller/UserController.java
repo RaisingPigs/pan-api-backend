@@ -38,12 +38,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
-@SaCheckRole("admin")
+
 public class UserController {
     private final UserService userService;
 
     //region 增删改查
-    @SaCheckRole("admin")
+    
     @PostMapping("/add")
     public BaseResponse<Long> addUser(
         @RequestBody UserAddReq userAddReq) {
@@ -62,7 +62,7 @@ public class UserController {
         return ResultUtils.success(user.getId());
     }
 
-    @SaCheckRole("admin")
+    
     @DeleteMapping("/delete/{id}")
     public BaseResponse<Void> deleteUser(@PathVariable("id") Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -82,7 +82,7 @@ public class UserController {
         return ResultUtils.success();
     }
 
-    @SaCheckRole("admin")
+    
     @PutMapping("/update")
     public BaseResponse<Void> updateUser(
         @RequestBody UserUpdateReq userUpdateReq) {
@@ -106,7 +106,7 @@ public class UserController {
         return ResultUtils.success();
     }
 
-    @SaCheckRole("admin")
+    
     @GetMapping("/get/{id}")
     public BaseResponse<UserVO> getUserById(
         @PathVariable("id")
@@ -119,7 +119,7 @@ public class UserController {
         return ResultUtils.success(userVO);
     }
 
-    @SaCheckRole("admin")
+    
     @PostMapping("/list")
     public BaseResponse<List<UserVO>> listUser(
         @RequestBody UserQueryReq userQueryReq) {
@@ -135,7 +135,7 @@ public class UserController {
         return ResultUtils.success(userVOList);
     }
 
-    @SaCheckRole("admin")
+    
     @PostMapping("/list/page")
     public BaseResponse<IPage<UserVO>> listUserByPage(
         @RequestBody UserQueryReq userQueryReq) {

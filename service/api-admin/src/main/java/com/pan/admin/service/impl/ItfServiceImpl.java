@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pan.admin.mapper.ItfMapper;
 import com.pan.admin.service.ItfService;
 import com.pan.admin.service.ParamService;
+import com.pan.admin.service.UserItfService;
 import com.pan.admin.service.UserService;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
@@ -16,6 +17,7 @@ import com.pan.model.converter.itf.ItfDetailsVOConverter;
 import com.pan.model.entity.Itf;
 import com.pan.model.entity.Param;
 import com.pan.model.entity.User;
+import com.pan.model.entity.UserItf;
 import com.pan.model.enums.itf.MethodEnum;
 import com.pan.model.enums.param.ParamTypeEnum;
 import com.pan.model.vo.itf.ItfDetailsVO;
@@ -45,6 +47,7 @@ public class ItfServiceImpl
     private final ObjectMapper objectMapper;
     private final UserService userService;
     private final ParamService paramService;
+    private final UserItfService userItfService;
 
 
     @Override
@@ -85,7 +88,7 @@ public class ItfServiceImpl
         Map<String, Object> queryParams = itfInvokeBO.getQueryParam();
         Map<String, Object> jsonBody = itfInvokeBO.getBodyParam();
 
-        User user = userService.getById(AuthUtils.getLoginUser().getId());
+        User user = userService.getById(AuthUtils.getLoginUserId());
         ItfClient itfClient = new ItfClient(user.getAccessKey(), user.getSecretKey());
 
         if (MethodEnum.GET == method) {
@@ -109,20 +112,20 @@ public class ItfServiceImpl
             .eq(Param::getItfId, id)
             .list();
 
+        UserItf userItf = userItfService.lambdaQuery()
+            .eq(UserItf::getItfId, id)
+            .eq(UserItf::getUserId, AuthUtils.getLoginUserId())
+            .one();
+
         Map<ParamTypeEnum, List<Param>> paramMap = params.stream().collect(Collectors.groupingBy(Param::getParamType));
 
         List<ParamVO> query = ParamVO.build(paramMap.get(ParamTypeEnum.QUERY));
         List<ParamVO> body = ParamVO.build(paramMap.get(ParamTypeEnum.BODY));
+        List<ParamVO> commonResp = ItfDetailsVO.getCommonResp();
         List<ParamVO> respData = ParamVO.build(paramMap.get(ParamTypeEnum.RESP));
 
         Itf itf = getById(id);
-        ItfDetailsVO itfDetailsVO = ItfDetailsVOConverter.INSTANCE.toItfDetailsVo(itf);
-        itfDetailsVO.setQueryParam(query);
-        itfDetailsVO.setBodyParam(body);
-        itfDetailsVO.setCommonResp(ItfDetailsVO.getBaseResp());
-        itfDetailsVO.setRespData(respData);
-
-        return itfDetailsVO;
+        return ItfDetailsVOConverter.INSTANCE.toItfDetailsVO(itf, userItf, query, body, commonResp, respData);
     }
 }
 

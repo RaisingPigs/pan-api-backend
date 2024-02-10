@@ -9,5 +9,5 @@ import org.mapstruct.factory.Mappers;
 public interface ItfVOConverter {
     ItfVOConverter INSTANCE = Mappers.getMapper(ItfVOConverter.class);
 
-    ItfVO toItfVo(Itf itf);
+    ItfVO toItfVO(Itf itf);
 }

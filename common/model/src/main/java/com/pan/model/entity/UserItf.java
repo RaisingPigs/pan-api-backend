@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.pan.model.common.entity.BaseEntity;
+import com.pan.model.enums.useritf.StatusEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -51,7 +52,7 @@ public class UserItf extends BaseEntity {
     /**
      * 状态 0-正常 1-禁用(用户违反规则后禁用)
      */
-    private Integer status;
+    private StatusEnum status;
 
 
     public UserItf() {

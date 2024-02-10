@@ -5,9 +5,10 @@ import com.pan.admin.mapper.UserItfMapper;
 import com.pan.admin.service.UserItfService;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
+import com.pan.common.util.AuthUtils;
 import com.pan.model.entity.UserItf;
-import com.pan.model.enums.useritf.StatusEnum;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @description 针对表【user_interface_info(用户接口调用表)】的数据库操作Service实现
  * @createDate 2023-03-01 09:46:46
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserItfServiceImpl
@@ -52,6 +54,8 @@ public class UserItfServiceImpl
 
     @Override
     public void invokeCountIncrement(long itfId, long userId) {
+        log.error("=======================调用次数+1==============");
+
         int i = userItfMapper.itfInvokeCountIncrement(itfId, userId);
 
         if (i <= 0) {
@@ -70,7 +74,7 @@ public class UserItfServiceImpl
             UserItf newUserItf = new UserItf(userId, itfId, DEFAULT_INVOKE_COUNT, DEFAULT_LEFT_COUNT);
             save(newUserItf);
         } else {
-            if (StatusEnum.isDisable(userItf.getStatus())) {
+            if (userItf.getStatus().isDisable()) {
                 return false;
             }
             if (userItf.getLeftCount() <= 0) {
@@ -80,6 +84,26 @@ public class UserItfServiceImpl
 
         return true;
     }
+
+    @Override
+    public UserItf getUserItfByItfId(Long itfId) {
+        return lambdaQuery()
+            .eq(UserItf::getItfId, itfId)
+            .eq(UserItf::getUserId, AuthUtils.getLoginUserId())
+            .one();
+    }
+
+    @Override
+    public void leftCountIncrementById(Long id, Integer count) {
+        userItfMapper.leftCountIncrementById(id, count);
+    }
+
+    @Override
+    public void leftCountIncrement(Long itfId, Long userId, Integer count) {
+        userItfMapper.leftCountIncrement(itfId, userId, count);
+
+    }
+
 }
 
 

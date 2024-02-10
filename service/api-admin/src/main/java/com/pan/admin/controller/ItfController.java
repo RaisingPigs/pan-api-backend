@@ -41,7 +41,7 @@ public class ItfController {
     private ItfService itfService;
 
     //region 增删改查
-    @SaCheckRole("admin")
+    
     @PostMapping("/add")
     public Long addItf(
         @RequestBody ItfAddReq itfAddReq) {
@@ -60,7 +60,7 @@ public class ItfController {
         return itf.getId();
     }
 
-    @SaCheckRole("admin")
+    
     @DeleteMapping("/delete/{id}")
     public void deleteItf(@PathVariable Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -78,7 +78,7 @@ public class ItfController {
         }
     }
 
-    @SaCheckRole("admin")
+    
     @PutMapping("/update")
     public void updateItf(
         @RequestBody ItfUpdateReq itfUpdateReq) {
@@ -107,7 +107,7 @@ public class ItfController {
         }
 
         Itf itf = itfService.getById(id);
-        return ItfVOConverter.INSTANCE.toItfVo(itf);
+        return ItfVOConverter.INSTANCE.toItfVO(itf);
     }
 
     @GetMapping("/details/{id}")
@@ -119,7 +119,7 @@ public class ItfController {
         return itfService.getItfDetailsById(id);
     }
 
-    @SaCheckRole("admin")
+    
     @PostMapping("/list")
     public List<ItfVO> listItf(
         @RequestBody ItfQueryReq itfQueryReq) {
@@ -129,7 +129,7 @@ public class ItfController {
         List<Itf> itfList = itfService.list(wrapper);
 
         return itfList.stream()
-            .map(ItfVOConverter.INSTANCE::toItfVo)
+            .map(ItfVOConverter.INSTANCE::toItfVO)
             .collect(Collectors.toList());
     }
 
@@ -164,12 +164,12 @@ public class ItfController {
 
         IPage<Itf> itfPage = itfService.page(new Page<>(pagenum, pagesize), wrapper);
 
-        return itfPage.convert(ItfVOConverter.INSTANCE::toItfVo);
+        return itfPage.convert(ItfVOConverter.INSTANCE::toItfVO);
     }
     //endregion
 
     //region 接口上线/下线
-    @SaCheckRole("admin")
+    
     @PutMapping("/online/{id}")
     public void onlineItf(@PathVariable("id") Long id) {
         if (id == null || id <= 0) {
@@ -203,7 +203,7 @@ public class ItfController {
         }
     }
 
-    @SaCheckRole("admin")
+    
     @PutMapping("/offline/{id}")
     public void offlineItf(@PathVariable("id") Long id) {
         if (id == null || id <= 0) {
@@ -266,7 +266,7 @@ public class ItfController {
             .eq(Itf::getStatus, StatusEnum.ONLINE)
             .one();
 
-        return ItfVOConverter.INSTANCE.toItfVo(itf);
+        return ItfVOConverter.INSTANCE.toItfVO(itf);
     }
 
     @PostMapping("/path-method")
@@ -283,6 +283,6 @@ public class ItfController {
             .eq(Itf::getStatus, StatusEnum.ONLINE)
             .one();
 
-        return ItfVOConverter.INSTANCE.toItfVo(itf);
+        return ItfVOConverter.INSTANCE.toItfVO(itf);
     }
 }

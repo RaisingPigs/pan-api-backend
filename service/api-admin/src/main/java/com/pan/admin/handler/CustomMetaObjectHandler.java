@@ -35,7 +35,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
 
         Long userId = 0L;
         if (StpUtil.isLogin()) {
-            userId = AuthUtils.getLoginUser().getId();
+            userId = AuthUtils.getLoginUserId();
         }
 
         if (metaObject.hasSetter(CREATOR_ID_FIELD)) {
@@ -54,7 +54,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         }
         Long userId = 0L;
         if (StpUtil.isLogin()) {
-            userId = AuthUtils.getLoginUser().getId();
+            userId = AuthUtils.getLoginUserId();
         }
 
         if (metaObject.hasSetter(UPDATER_ID_FIELD)) {

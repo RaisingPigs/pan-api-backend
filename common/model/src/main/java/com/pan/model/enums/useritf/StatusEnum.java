@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -55,6 +56,14 @@ public enum StatusEnum implements BaseEnum {
         return Arrays.stream(values())
             .map(item -> item.code)
             .collect(Collectors.toList());
+    }
+
+    public boolean isEnable() {
+        return Objects.equals(this, StatusEnum.ENABLE);
+    }
+
+    public boolean isDisable() {
+        return !isEnable();
     }
 
 }

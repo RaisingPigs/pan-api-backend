@@ -1,5 +1,6 @@
 package com.pan.model.vo.useritf;
 
+import com.pan.model.enums.useritf.StatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,5 +20,5 @@ public class UserItfVO implements Serializable {
 
     private Integer leftCount;
 
-    private Integer status;
+    private StatusEnum status;
 }

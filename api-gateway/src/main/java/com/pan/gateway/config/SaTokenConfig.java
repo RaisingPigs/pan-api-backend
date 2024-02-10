@@ -43,7 +43,10 @@ public class SaTokenConfig {
         "/api/admin/itf/list/page",
         "/api/admin/itf/invoke",
         "/api/admin/itf/get/*",
-        "/api/admin/itf/details/*"
+        "/api/admin/itf/details/*",
+        "/api/admin/user-itf/get/*",
+        "/api/admin/user-itf/get",
+        "/api/admin/user-itf/count-increment/left"
     };
 
     private static final String[] CLIENT_CHECK_LIST = {
@@ -51,7 +54,7 @@ public class SaTokenConfig {
         "/api/admin/user/sk-by-ak",
         "/api/admin/itf/url-method",
         "/api/admin/itf/path-method",
-        "/api/admin/user-itf/count-increment",
+        "/api/admin/user-itf/count-increment/invoke",
         "/api/admin/user-itf/check-invoke-auth"
     };
 

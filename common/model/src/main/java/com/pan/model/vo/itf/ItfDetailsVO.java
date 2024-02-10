@@ -1,13 +1,11 @@
 package com.pan.model.vo.itf;
 
-import com.pan.model.enums.itf.MethodEnum;
-import com.pan.model.enums.itf.StatusEnum;
 import com.pan.model.enums.param.RequiredEnum;
 import com.pan.model.vo.param.ParamVO;
+import com.pan.model.vo.useritf.UserItfVO;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,33 +19,9 @@ import java.util.List;
 public class ItfDetailsVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private ItfVO itfVO;
 
-    private String name;
-
-    private String path;
-
-    private String url;
-
-    private MethodEnum method;
-
-        private String description;
-
-    private String queryParamExample;
-
-    private String bodyParamExample;
-
-    private String respExample;
-
-    private String reqHeader;
-
-    private String respHeader;
-
-    private StatusEnum status;
-
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
+    private UserItfVO userItfVO;
 
     private List<ParamVO> queryParam;
 
@@ -57,7 +31,7 @@ public class ItfDetailsVO implements Serializable {
 
     private List<ParamVO> respData;
 
-    public static List<ParamVO> getBaseResp() {
+    public static List<ParamVO> getCommonResp() {
         ParamVO codeParamVO = new ParamVO(-1L, "code", RequiredEnum.REQUIRED, "number", "响应码, 20000-成功", null);
         ParamVO msgParamVO = new ParamVO(-2L, "msg", RequiredEnum.REQUIRED, "string", "响应消息", null);
         ParamVO dataParamVO = new ParamVO(-3L, "data", RequiredEnum.REQUIRED, "object", "响应数据", null);

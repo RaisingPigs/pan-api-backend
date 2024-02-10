@@ -1,6 +1,5 @@
 package com.pan.admin.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -34,7 +33,7 @@ public class UserItfController {
     private UserItfService userItfService;
 
     //region 增删改查
-    @SaCheckRole("admin")
+
     @PostMapping("/add")
     public Long addUserItf(
         @RequestBody UserItfAddReq userItfAddReq) {
@@ -44,7 +43,7 @@ public class UserItfController {
 
         UserItf userItf = new UserItf();
         BeanUtils.copyProperties(userItfAddReq, userItf);
-        userItf.setUserId(AuthUtils.getLoginUser().getId());
+        userItf.setUserId(AuthUtils.getLoginUserId());
 
         userItfService.validUserItf(userItf, true);
         boolean save = userItfService.save(userItf);
@@ -55,7 +54,7 @@ public class UserItfController {
         return userItf.getId();
     }
 
-    @SaCheckRole("admin")
+
     @DeleteMapping("/delete/{id}")
     public void deleteUserItf(@PathVariable Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -73,7 +72,7 @@ public class UserItfController {
         }
     }
 
-    @SaCheckRole("admin")
+
     @PutMapping("/update")
     public void updateUserItf(
         @RequestBody UserItfUpdateReq userItfUpdateReq) {
@@ -96,7 +95,6 @@ public class UserItfController {
         }
     }
 
-    @SaCheckRole("admin")
     @GetMapping("/get/{id}")
     public UserItfVO getUserItfById(@PathVariable("id") Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -107,7 +105,17 @@ public class UserItfController {
         return UserItfVOConverter.INSTANCE.toUserItfVO(userItf);
     }
 
-    @SaCheckRole("admin")
+    @GetMapping("/get")
+    public UserItfVO getUserItfByItfId(@RequestParam("itfId") Long itfId) {
+        if (Objects.isNull(itfId) || itfId <= 0) {
+            throw new BusinessException(ResultCode.PARAMS_ERR);
+        }
+
+        UserItf userItf = userItfService.getUserItfByItfId(itfId);
+        return UserItfVOConverter.INSTANCE.toUserItfVO(userItf);
+    }
+
+
     @PostMapping("/list")
     public List<UserItfVO> listUserItf(
         @RequestBody UserItfQueryReq userItfQueryReq) {
@@ -123,7 +131,7 @@ public class UserItfController {
             .collect(Collectors.toList());
     }
 
-    @SaCheckRole("admin")
+
     @PostMapping("/list/page")
     public IPage<UserItfVO> listUserItfByPage(
         @RequestBody UserItfQueryReq userItfQueryReq) {
@@ -139,8 +147,8 @@ public class UserItfController {
         UserItf userItfQuery = new UserItf();
         BeanUtils.copyProperties(userItfQueryReq, userItfQuery);
 
-        long pagenum = userItfQueryReq.getPageNum();
-        long pagesize = userItfQueryReq.getPageSize();
+        long pageNum = userItfQueryReq.getPageNum();
+        long pageSize = userItfQueryReq.getPageSize();
         String sortField = userItfQueryReq.getSortField();
         boolean sortOrder = userItfQueryReq.isSortOrder();
 
@@ -148,7 +156,7 @@ public class UserItfController {
         /*使用UserItfName字段做模糊查询*/
         wrapper.orderBy(StringUtils.isNotBlank(sortField), sortOrder, sortField);
 
-        IPage<UserItf> userItfPage = userItfService.page(new Page<>(pagenum, pagesize), wrapper);
+        IPage<UserItf> userItfPage = userItfService.page(new Page<>(pageNum, pageSize), wrapper);
 
         return userItfPage.convert(UserItfVOConverter.INSTANCE::toUserItfVO);
     }
@@ -167,7 +175,7 @@ public class UserItfController {
         return userItfService.checkInvokeAuth(itfId, userId);
     }
 
-    @PutMapping("/count-increment")
+    @PutMapping("/count-increment/invoke")
     public void invokeCountIncrement(@RequestBody InvokeCountReq invokeCountReq) {
         if (Objects.isNull(invokeCountReq)
             || !invokeCountReq.checkAllAttr()) {
@@ -177,5 +185,33 @@ public class UserItfController {
         Long userId = invokeCountReq.getUserId();
 
         userItfService.invokeCountIncrement(itfId, userId);
+    }
+
+    @PutMapping("/count-increment/left")
+    public void leftCountIncrement(@RequestBody LeftCountReq leftCountReq) {
+        if (Objects.isNull(leftCountReq)) {
+            throw new BusinessException(ResultCode.PARAMS_ERR);
+        }
+
+        Integer count = leftCountReq.getCount();
+        if (Objects.isNull(count) || count <= 0 || count > 10000) {
+            throw new BusinessException(ResultCode.PARAMS_ERR, "调用次数异常");
+        }
+
+        Long id = leftCountReq.getId();
+        if (Objects.nonNull(id) && id > 0) {
+            userItfService.leftCountIncrementById(id, count);
+            return;
+        }
+
+        Long itfId = leftCountReq.getItfId();
+        Long userId = leftCountReq.getUserId();
+        if (Objects.nonNull(itfId) && itfId > 0
+            && Objects.nonNull(userId) && userId > 0) {
+            userItfService.leftCountIncrement(itfId, userId, count);
+            return;
+        }
+
+        throw new BusinessException(ResultCode.PARAMS_ERR);
     }
 }

@@ -42,7 +42,7 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Component
@@ -74,15 +74,14 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
             /*校验用户是否有调用该接口的权限*/
             checkInvokeAuth(new InvokeAuthCheckReq(user.getId(), itf.getId()));
             return new InvokeCountReq(user.getId(), itf.getId());
-        });
+        }, Executors.newCachedThreadPool());
         InvokeCountReq invokeCountReq = permFuture.get();
 
         /*使用response来获取响应体, 然后使接口调用次数+1*/
         ServerHttpResponse originalResponse = exchange.getResponse();
         DataBufferFactory bufferFactory = originalResponse.bufferFactory();
         ServerHttpResponseDecorator decoratedResponse = getDecoratedResponse(originalResponse, bufferFactory, invokeCountReq);
-
-        // replace response with decorator
+        
         return chain.filter(exchange.mutate().response(decoratedResponse).build());
     }
 
@@ -152,17 +151,10 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
                 return super.writeWith(fluxBody.map(dataBuffer -> {
                     String respJson = getContent(dataBuffer);
 
-
-                    CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+                    CompletableFuture.supplyAsync(() -> {
                         invokeCountIncrement(respJson, invokeCountReq);
                         return null;
-                    });
-
-                    try {
-                        future.get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        throw new RuntimeException(e);
-                    }
+                    }, Executors.newCachedThreadPool());
 
                     return bufferFactory.wrap(respJson.getBytes(StandardCharsets.UTF_8));
                 }));

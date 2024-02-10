@@ -32,4 +32,23 @@
           and left_count > 0
 
     </update>
+
+    <update id="leftCountIncrementById">
+        update user_itf
+        set left_count = left_count + #{count}
+        where id = #{id}
+          and status = 0
+          and deleted = 0
+          and left_count > 0
+    </update>
+    
+    <update id="leftCountIncrement">
+        update user_itf
+        set left_count = left_count + #{count}
+        where itf_id = #{itfId}
+          and user_id = #{userId}
+          and status = 0
+          and deleted = 0
+          and left_count > 0
+    </update>
 </mapper>

@@ -21,6 +21,10 @@ public class AuthUtils {
     private AuthUtils() {
     }
 
+    public static Long getLoginUserId() {
+        return getLoginUser().getId();
+    }
+
     public static UserDTO getLoginUser() {
         UserDTO userDTO = StpUtil.getSession().getModel(UserConstant.USER_LOGIN_STATE, UserDTO.class);
 

@@ -18,6 +18,6 @@ public interface UserItfFeignClient {
     @PostMapping("/check-invoke-auth")
     BaseResponse<Boolean> checkInvokeAuth(@RequestBody InvokeAuthCheckReq invokeAuthCheckReq);
 
-    @PutMapping("/count-increment")
+    @PutMapping("/count-increment/invoke")
     BaseResponse<Void> invokeCountIncrement(@RequestBody InvokeCountReq invokeCountReq);
 }
