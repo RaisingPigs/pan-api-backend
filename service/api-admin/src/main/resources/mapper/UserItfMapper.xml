@@ -51,4 +51,49 @@
           and deleted = 0
           and left_count > 0
     </update>
+    
+    <select id="countInvoke"  resultType="java.lang.Integer">
+        select sum(invoke_count)
+        from user_itf
+        where deleted = 0;
+    </select>
+    
+    <select id="countUserInvoke" resultType="java.lang.Integer">
+        select sum(invoke_count)
+        from user_itf
+        where user_id = #{userId}
+          and deleted = 0;
+    </select>
+    
+    <select id="countUserLeft" resultType="java.lang.Integer">
+        select sum(left_count)
+        from user_itf
+        where user_id = #{userId}
+          and deleted = 0;
+    </select>
+    
+    <select id="selectInvokeTop10" resultType="com.pan.model.vo.statistics.StatisticsItfCountVO">
+        select itf.id as id, itf.name as name, sum(invoke_count) as total
+        from user_itf
+                 inner join itf
+                            on user_itf.itf_id = itf.id
+        where itf.deleted = 0
+          and user_itf.deleted = 0
+        group by itf.id
+        order by total
+        limit 10;
+    </select>
+    
+    <select id="selectUserInvokeTop10" resultType="com.pan.model.vo.statistics.StatisticsItfCountVO">
+        select itf.id as id, itf.name as name, sum(invoke_count) as total
+        from user_itf
+                 inner join itf
+                            on user_itf.itf_id = itf.id
+        where itf.deleted = 0
+          and user_itf.deleted = 0
+        and user_itf.user_id = #{userId}
+        group by itf.id
+        order by total
+        limit 10;
+    </select>
 </mapper>

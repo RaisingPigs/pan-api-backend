@@ -2,7 +2,10 @@ package com.pan.admin.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.pan.model.entity.UserItf;
+import com.pan.model.vo.statistics.StatisticsItfCountVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author Mr.Pan
@@ -16,6 +19,16 @@ public interface UserItfMapper extends BaseMapper<UserItf> {
     void leftCountIncrementById(@Param("id") long id, @Param("count") int count);
 
     void leftCountIncrement(@Param("itfId") long itfId, @Param("userId") long userId, @Param("count") int count);
+
+    int countInvoke();
+
+    int countUserInvoke(@Param("userId") Long userId);
+
+    int countUserLeft(@Param("userId") Long userId);
+
+    List<StatisticsItfCountVO> selectInvokeTop10();
+
+    List<StatisticsItfCountVO> selectUserInvokeTop10(@Param("userId") Long userId);
 }
 
 

@@ -55,7 +55,11 @@ public class SaTokenConfig {
         "/api/admin/itf/url-method",
         "/api/admin/itf/path-method",
         "/api/admin/user-itf/count-increment/invoke",
-        "/api/admin/user-itf/check-invoke-auth"
+        "/api/admin/user-itf/check-invoke-auth",
+
+        "/api/admin/statistics/count",
+        "/api/admin/statistics/count/invoke_top",
+        "/api/admin/statistics/count/user_invoke_top"
     };
 
     // 注册 Sa-Token全局过滤器 

@@ -101,9 +101,7 @@ public class UserItfServiceImpl
     @Override
     public void leftCountIncrement(Long itfId, Long userId, Integer count) {
         userItfMapper.leftCountIncrement(itfId, userId, count);
-
     }
-
 }
 
 
