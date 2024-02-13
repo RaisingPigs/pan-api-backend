@@ -58,7 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public List<StatisticsItfCountVO> countUserInvokeTopN() {
         Long loginUserId = AuthUtils.getLoginUserId();
-        int total = countInvoke();
+        int total = countUserInvoke();
         List<StatisticsItfCountVO> statisticsItfCountVOList = userItfMapper.selectUserInvokeTop10(loginUserId);
 
         statisticsItfCountVOList.forEach(percentage -> percentage.calcPercentage(total));

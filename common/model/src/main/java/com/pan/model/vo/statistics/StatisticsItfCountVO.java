@@ -18,6 +18,10 @@ public class StatisticsItfCountVO {
     private Double percentage;
 
     public void calcPercentage(int total) {
+        if (total == 0) {
+            setPercentage(0D);
+            return;
+        }
         BigDecimal percentage = NumberUtil.round((double) getTotal() / total, 2);
 
         setPercentage(percentage.doubleValue());
