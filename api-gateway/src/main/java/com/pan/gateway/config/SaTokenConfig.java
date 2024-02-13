@@ -46,7 +46,10 @@ public class SaTokenConfig {
         "/api/admin/itf/details/*",
         "/api/admin/user-itf/get/*",
         "/api/admin/user-itf/get",
-        "/api/admin/user-itf/count-increment/left"
+        "/api/admin/user-itf/count-increment/left",
+        "/api/admin/statistics/count",
+        "/api/admin/statistics/count/invoke_top",
+        "/api/admin/statistics/count/user_invoke_top"
     };
 
     private static final String[] CLIENT_CHECK_LIST = {
@@ -55,11 +58,7 @@ public class SaTokenConfig {
         "/api/admin/itf/url-method",
         "/api/admin/itf/path-method",
         "/api/admin/user-itf/count-increment/invoke",
-        "/api/admin/user-itf/check-invoke-auth",
-
-        "/api/admin/statistics/count",
-        "/api/admin/statistics/count/invoke_top",
-        "/api/admin/statistics/count/user_invoke_top"
+        "/api/admin/user-itf/check-invoke-auth"
     };
 
     // 注册 Sa-Token全局过滤器 

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * @author Mr.Pan
  * @description 针对表【user_interface_info(用户接口调用表)】的数据库操作Service实现
@@ -23,9 +25,6 @@ import org.springframework.stereotype.Service;
 public class UserItfServiceImpl
     extends ServiceImpl<UserItfMapper, UserItf>
     implements UserItfService {
-    private static final int DEFAULT_INVOKE_COUNT = 0;
-    private static final int DEFAULT_LEFT_COUNT = 10;
-
     private final UserItfMapper userItfMapper;
 
     @Override
@@ -54,8 +53,6 @@ public class UserItfServiceImpl
 
     @Override
     public void invokeCountIncrement(long itfId, long userId) {
-        log.error("=======================调用次数+1==============");
-
         int i = userItfMapper.itfInvokeCountIncrement(itfId, userId);
 
         if (i <= 0) {
@@ -64,32 +61,31 @@ public class UserItfServiceImpl
     }
 
     @Override
-    public boolean checkInvokeAuth(Long itfId, Long userId) {
-        UserItf userItf = lambdaQuery()
-            .eq(UserItf::getUserId, userId)
-            .eq(UserItf::getItfId, itfId)
-            .one();
+    public void checkInvokeAuth(Long itfId, Long userId) {
+        UserItf userItf = getUserItf(itfId, userId);
 
-        if (userItf == null) {
-            UserItf newUserItf = new UserItf(userId, itfId, DEFAULT_INVOKE_COUNT, DEFAULT_LEFT_COUNT);
-            save(newUserItf);
+        if (Objects.isNull(userItf)) {
+            saveDefault(userId, itfId);
         } else {
             if (userItf.getStatus().isDisable()) {
-                return false;
+                throw new BusinessException(ResultCode.NO_AUTH, "禁止调用该接口");
             }
             if (userItf.getLeftCount() <= 0) {
-                return false;
+                throw new BusinessException(ResultCode.NO_AUTH, "剩余可调用次数不足");
             }
         }
-
-        return true;
     }
 
     @Override
     public UserItf getUserItfByItfId(Long itfId) {
+        return getUserItf(itfId, AuthUtils.getLoginUserId());
+    }
+
+    @Override
+    public UserItf getUserItf(Long itfId, Long userId) {
         return lambdaQuery()
             .eq(UserItf::getItfId, itfId)
-            .eq(UserItf::getUserId, AuthUtils.getLoginUserId())
+            .eq(UserItf::getUserId, userId)
             .one();
     }
 
@@ -100,7 +96,17 @@ public class UserItfServiceImpl
 
     @Override
     public void leftCountIncrement(Long itfId, Long userId, Integer count) {
+        UserItf userItf = getUserItf(itfId, userId);
+        if (Objects.isNull(userItf)) {
+            saveDefault(userId, itfId);
+        }
+
         userItfMapper.leftCountIncrement(itfId, userId, count);
+    }
+
+    private void saveDefault(Long userId, Long itfId) {
+        UserItf newUserItf = new UserItf(userId, itfId);
+        save(newUserItf);
     }
 }
 

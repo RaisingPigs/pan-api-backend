@@ -3,7 +3,7 @@ package com.pan.gateway.check;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.pan.client.UserFeignClient;
-import com.pan.common.constant.RedisConstant;
+import com.pan.model.constant.RedisConstant;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.util.BaseRespUtils;
 import com.pan.common.util.SpringContextUtils;

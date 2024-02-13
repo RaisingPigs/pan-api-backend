@@ -1,12 +1,9 @@
 package com.pan.gateway.config;
 
-import com.pan.common.constant.GatewayConstant;
+import com.pan.model.constant.GatewayConstant;
 import feign.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-
-import java.util.List;
 
 @Configuration
 public class FeignConfig {

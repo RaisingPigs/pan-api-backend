@@ -1,6 +1,6 @@
 package com.pan.gateway.filter;
 
-import com.pan.common.constant.RedisConstant;
+import com.pan.model.constant.RedisConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
 import lombok.RequiredArgsConstructor;

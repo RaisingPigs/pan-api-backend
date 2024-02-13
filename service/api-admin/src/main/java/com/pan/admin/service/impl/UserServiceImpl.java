@@ -2,7 +2,7 @@ package com.pan.admin.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pan.common.constant.UserConstant;
+import com.pan.model.constant.UserConstant;
 import com.pan.admin.mapper.UserMapper;
 import com.pan.admin.service.UserService;
 import com.pan.common.util.AuthUtils;

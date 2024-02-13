@@ -1,6 +1,9 @@
 package com.pan.model.vo.statistics;
 
+import cn.hutool.core.util.NumberUtil;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * @description:
@@ -12,5 +15,11 @@ public class StatisticsItfCountVO {
     private Long id;
     private String name;
     private Integer total;
-    private Integer percentage;
+    private Double percentage;
+
+    public void calcPercentage(int total) {
+        BigDecimal percentage = NumberUtil.round((double) getTotal() / total, 2);
+
+        setPercentage(percentage.doubleValue());
+    }
 }

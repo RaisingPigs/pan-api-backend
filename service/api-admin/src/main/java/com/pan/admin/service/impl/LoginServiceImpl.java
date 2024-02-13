@@ -2,7 +2,7 @@ package com.pan.admin.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.pan.common.constant.UserConstant;
+import com.pan.model.constant.UserConstant;
 import com.pan.admin.service.LoginService;
 import com.pan.admin.service.UserService;
 import com.pan.common.util.AuthUtils;

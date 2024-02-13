@@ -81,7 +81,7 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
         ServerHttpResponse originalResponse = exchange.getResponse();
         DataBufferFactory bufferFactory = originalResponse.bufferFactory();
         ServerHttpResponseDecorator decoratedResponse = getDecoratedResponse(originalResponse, bufferFactory, invokeCountReq);
-        
+
         return chain.filter(exchange.mutate().response(decoratedResponse).build());
     }
 
@@ -104,8 +104,8 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
     private User getUserByAccessKey(String accessKey) {
         UserFeignClient userFeignClient = SpringContextUtils.getBean(UserFeignClient.class);
         BaseResponse<User> baseResponse = userFeignClient.getUserByAccessKey(new AccessKeyReq(accessKey));
-        if (BaseRespUtils.isFailedWithoutEmpty(baseResponse)) {
-            throw new BusinessException(ResultCode.NO_AUTH);
+        if (BaseRespUtils.isFailed(baseResponse)) {
+            throw new BusinessException(baseResponse);
         }
 
         return baseResponse.getData();
@@ -121,8 +121,8 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
         ItfFeignClient itfFeignClient = SpringContextUtils.getBean(ItfFeignClient.class);
         BaseResponse<Itf> baseResponse = itfFeignClient.getItfByPathAndMethod(new PathMethodReq(path, method));
 
-        if (BaseRespUtils.isFailedWithoutEmpty(baseResponse)) {
-            throw new BusinessException(ResultCode.NO_AUTH);
+        if (BaseRespUtils.isFailed(baseResponse)) {
+            throw new BusinessException(baseResponse);
         }
 
         return baseResponse.getData();
@@ -130,11 +130,10 @@ public class ItfInvokeGlobalFilter implements GlobalFilter, Ordered {
 
     private void checkInvokeAuth(InvokeAuthCheckReq invokeAuthCheckReq) {
         UserItfFeignClient userItfFeignClient = SpringContextUtils.getBean(UserItfFeignClient.class);
-        BaseResponse<Boolean> baseResponse = userItfFeignClient.checkInvokeAuth(invokeAuthCheckReq);
+        BaseResponse<Void> baseResponse = userItfFeignClient.checkInvokeAuth(invokeAuthCheckReq);
 
-        if (BaseRespUtils.isFailedWithoutEmpty(baseResponse)
-            || !baseResponse.getData()) {
-            throw new BusinessException(ResultCode.NO_AUTH);
+        if (BaseRespUtils.isFailed(baseResponse)) {
+            throw new BusinessException(baseResponse);
         }
     }
 

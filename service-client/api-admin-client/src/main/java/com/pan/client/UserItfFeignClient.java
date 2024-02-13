@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(value = "api-admin", contextId = "api-admin-userItf", path = "/api/admin/user-itf")
 public interface UserItfFeignClient {
     @PostMapping("/check-invoke-auth")
-    BaseResponse<Boolean> checkInvokeAuth(@RequestBody InvokeAuthCheckReq invokeAuthCheckReq);
+    BaseResponse<Void> checkInvokeAuth(@RequestBody InvokeAuthCheckReq invokeAuthCheckReq);
 
     @PutMapping("/count-increment/invoke")
     BaseResponse<Void> invokeCountIncrement(@RequestBody InvokeCountReq invokeCountReq);

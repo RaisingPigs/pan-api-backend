@@ -1,6 +1,7 @@
 package com.pan.common.exception;
 
 
+import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
 import lombok.Getter;
 
@@ -12,6 +13,11 @@ import lombok.Getter;
 @Getter
 public class BusinessException extends RuntimeException {
     private final int code;
+
+    public BusinessException(BaseResponse<?> baseResponse) {
+        super(baseResponse.getMsg());
+        this.code = baseResponse.getCode();
+    }
 
     public BusinessException(ResultCode resultCode, String msg) {
         super(msg);

@@ -16,5 +16,4 @@ public class StatisticsCountVO {
     private int itfCount;
     private int invokeCount;
     private int userInvokeCount;
-    private int userLeftCount;
 }

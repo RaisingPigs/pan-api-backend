@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @description:
@@ -34,7 +35,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public int countUserInvoke() {
         Long loginUserId = AuthUtils.getLoginUserId();
-        return userItfMapper.countUserInvoke(loginUserId);
+        Integer userInvoke = userItfMapper.countUserInvoke(loginUserId);
+        return Optional.ofNullable(userInvoke).orElse(0);
     }
 
     @Override
@@ -48,10 +50,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         int total = countInvoke();
         List<StatisticsItfCountVO> statisticsItfCountVOList = userItfMapper.selectInvokeTop10();
 
-        statisticsItfCountVOList.forEach(statisticsItfCountVO -> {
-            int percentage = statisticsItfCountVO.getTotal() / total;
-            statisticsItfCountVO.setPercentage(percentage);
-        });
+        statisticsItfCountVOList.forEach(percentage -> percentage.calcPercentage(total));
 
         return statisticsItfCountVOList;
     }
@@ -62,10 +61,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         int total = countInvoke();
         List<StatisticsItfCountVO> statisticsItfCountVOList = userItfMapper.selectUserInvokeTop10(loginUserId);
 
-        statisticsItfCountVOList.forEach(statisticsItfCountVO -> {
-            int percentage = statisticsItfCountVO.getTotal() / total;
-            statisticsItfCountVO.setPercentage(percentage);
-        });
+        statisticsItfCountVOList.forEach(percentage -> percentage.calcPercentage(total));
 
         return statisticsItfCountVOList;
     }

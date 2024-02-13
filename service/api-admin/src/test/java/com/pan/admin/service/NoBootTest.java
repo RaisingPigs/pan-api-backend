@@ -1,7 +1,5 @@
 package com.pan.admin.service;
 
-import com.pan.common.constant.UserConstant;
-import com.pan.common.util.AkSkUtils;
 import org.junit.jupiter.api.Test;
 
 /**

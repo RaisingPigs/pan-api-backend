@@ -22,7 +22,7 @@ public interface UserItfMapper extends BaseMapper<UserItf> {
 
     int countInvoke();
 
-    int countUserInvoke(@Param("userId") Long userId);
+    Integer countUserInvoke(@Param("userId") Long userId);
 
     int countUserLeft(@Param("userId") Long userId);
 

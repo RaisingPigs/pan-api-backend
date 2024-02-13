@@ -1,4 +1,4 @@
-package com.pan.common.constant;
+package com.pan.model.constant;
 
 /**
  * @description: 用户常量

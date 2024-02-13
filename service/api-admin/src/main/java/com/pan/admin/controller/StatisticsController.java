@@ -22,15 +22,14 @@ import java.util.List;
 @RequestMapping("/statistics")
 public class StatisticsController {
     private final StatisticsService statisticsService;
-    
+
     @GetMapping("/count")
     public BaseResponse<StatisticsCountVO> count() {
         int itfCount = statisticsService.countItf();
         int invokeCount = statisticsService.countInvoke();
         int userInvokeCount = statisticsService.countUserInvoke();
-        int userLeftCount = statisticsService.countUserLeft();
 
-        StatisticsCountVO statisticsCountVO = new StatisticsCountVO(itfCount, invokeCount, userInvokeCount, userLeftCount);
+        StatisticsCountVO statisticsCountVO = new StatisticsCountVO(itfCount, invokeCount, userInvokeCount);
         return ResultUtils.success(statisticsCountVO);
     }
 

@@ -13,6 +13,7 @@ import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.util.AuthUtils;
 import com.pan.model.bo.itf.ItfInvokeBO;
+import com.pan.model.constant.UserItfConstant;
 import com.pan.model.converter.itf.ItfDetailsVOConverter;
 import com.pan.model.entity.Itf;
 import com.pan.model.entity.Param;
@@ -112,10 +113,15 @@ public class ItfServiceImpl
             .eq(Param::getItfId, id)
             .list();
 
-        UserItf userItf = userItfService.lambdaQuery()
-            .eq(UserItf::getItfId, id)
-            .eq(UserItf::getUserId, AuthUtils.getLoginUserId())
-            .one();
+        UserItf userItf = userItfService.getUserItfByItfId(id);
+
+        if (Objects.isNull(userItf)) {
+            userItf = new UserItf(
+                UserItfConstant.NOT_EXISTS_ID,
+                AuthUtils.getLoginUserId(),
+                id
+            );
+        }
 
         Map<ParamTypeEnum, List<Param>> paramMap = params.stream().collect(Collectors.groupingBy(Param::getParamType));
 

@@ -14,9 +14,11 @@ public interface UserItfService extends IService<UserItf> {
 
     void invokeCountIncrement(long itfId, long userId);
 
-    boolean checkInvokeAuth(Long itfId, Long userId);
+    void checkInvokeAuth(Long itfId, Long userId);
 
     UserItf getUserItfByItfId(Long itfId);
+    
+    UserItf getUserItf(Long itfId, Long userId);
 
     void leftCountIncrementById(Long id, Integer count);
 

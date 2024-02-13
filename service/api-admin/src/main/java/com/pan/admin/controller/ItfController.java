@@ -1,15 +1,14 @@
 package com.pan.admin.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pan.admin.service.ItfService;
-import com.pan.common.constant.PageConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
 import com.pan.model.bo.itf.ItfInvokeBO;
+import com.pan.model.constant.PageConstant;
 import com.pan.model.converter.itf.ItfConverter;
 import com.pan.model.converter.itf.ItfVOConverter;
 import com.pan.model.entity.Itf;
@@ -18,11 +17,11 @@ import com.pan.model.enums.itf.StatusEnum;
 import com.pan.model.req.itf.*;
 import com.pan.model.vo.itf.ItfDetailsVO;
 import com.pan.model.vo.itf.ItfVO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -36,12 +35,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/itf")
+@RequiredArgsConstructor
 public class ItfController {
-    @Resource
-    private ItfService itfService;
+    private final ItfService itfService;
 
     //region 增删改查
-    
+
     @PostMapping("/add")
     public Long addItf(
         @RequestBody ItfAddReq itfAddReq) {
@@ -60,7 +59,7 @@ public class ItfController {
         return itf.getId();
     }
 
-    
+
     @DeleteMapping("/delete/{id}")
     public void deleteItf(@PathVariable Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -78,7 +77,7 @@ public class ItfController {
         }
     }
 
-    
+
     @PutMapping("/update")
     public void updateItf(
         @RequestBody ItfUpdateReq itfUpdateReq) {
@@ -119,7 +118,7 @@ public class ItfController {
         return itfService.getItfDetailsById(id);
     }
 
-    
+
     @PostMapping("/list")
     public List<ItfVO> listItf(
         @RequestBody ItfQueryReq itfQueryReq) {
@@ -169,7 +168,7 @@ public class ItfController {
     //endregion
 
     //region 接口上线/下线
-    
+
     @PutMapping("/online/{id}")
     public void onlineItf(@PathVariable("id") Long id) {
         if (id == null || id <= 0) {
@@ -203,7 +202,7 @@ public class ItfController {
         }
     }
 
-    
+
     @PutMapping("/offline/{id}")
     public void offlineItf(@PathVariable("id") Long id) {
         if (id == null || id <= 0) {

@@ -1,7 +1,7 @@
 package com.pan.common.util;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.pan.common.constant.UserConstant;
+import com.pan.model.constant.UserConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
 import com.pan.model.dto.user.UserDTO;

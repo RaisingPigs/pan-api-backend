@@ -1,11 +1,10 @@
 package com.pan.admin.controller;
 
-import cn.dev33.satoken.annotation.SaCheckRole;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pan.admin.service.UserService;
-import com.pan.common.constant.PageConstant;
+import com.pan.model.constant.PageConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;

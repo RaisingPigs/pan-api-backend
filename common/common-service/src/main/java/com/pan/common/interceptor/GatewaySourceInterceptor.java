@@ -1,6 +1,6 @@
 package com.pan.common.interceptor;
 
-import com.pan.common.constant.GatewayConstant;
+import com.pan.model.constant.GatewayConstant;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.resp.ResultUtils;
 import com.pan.common.util.WebUtils;

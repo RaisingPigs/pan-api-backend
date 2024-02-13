@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pan.admin.service.UserItfService;
-import com.pan.common.constant.PageConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.util.AuthUtils;
+import com.pan.model.constant.PageConstant;
 import com.pan.model.converter.useritf.UserItfVOConverter;
 import com.pan.model.entity.UserItf;
 import com.pan.model.req.useritf.*;
@@ -163,7 +163,7 @@ public class UserItfController {
     //endregion
 
     @PostMapping("/check-invoke-auth")
-    public Boolean checkInvokeAuth(@RequestBody InvokeAuthCheckReq invokeAuthCheckReq) {
+    public void checkInvokeAuth(@RequestBody InvokeAuthCheckReq invokeAuthCheckReq) {
         if (Objects.isNull(invokeAuthCheckReq)
             || !invokeAuthCheckReq.checkAllAttr()) {
             throw new BusinessException(ResultCode.PARAMS_ERR);
@@ -172,7 +172,7 @@ public class UserItfController {
         Long itfId = invokeAuthCheckReq.getItfId();
         Long userId = invokeAuthCheckReq.getUserId();
 
-        return userItfService.checkInvokeAuth(itfId, userId);
+        userItfService.checkInvokeAuth(itfId, userId);
     }
 
     @PutMapping("/count-increment/invoke")
