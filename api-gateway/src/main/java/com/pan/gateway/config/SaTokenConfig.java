@@ -30,7 +30,8 @@ public class SaTokenConfig {
 
     // admin下的接口需要登录才能访问
     private static final String[] LOGIN_CHECK_LIST = {
-        "/api/admin/**"
+        "/api/admin/sys/logout",
+        "/api/admin/sys/user"
     };
 
     private static final String[] ADMIN_CHECK_LIST = {
@@ -38,8 +39,6 @@ public class SaTokenConfig {
     };
 
     private static final String[] USER_CHECK_LIST = {
-        "/api/admin/sys/logout",
-        "/api/admin/sys/user",
         "/api/admin/itf/list/page",
         "/api/admin/itf/invoke",
         "/api/admin/itf/get/*",
@@ -89,6 +88,10 @@ public class SaTokenConfig {
                     })
                     .stop();
 
+                // 登录校验
+                SaRouter.match(LOGIN_CHECK_LIST)
+                    .check(r -> StpUtil.checkLogin())
+                    .stop();
 
                 SaRouter.match(USER_CHECK_LIST)
                     .check(r -> StpUtil.checkRoleOr(RoleEnum.USER.getDesc(), RoleEnum.ADMIN.getDesc()))
@@ -97,11 +100,6 @@ public class SaTokenConfig {
                 // 角色校验
                 SaRouter.match(ADMIN_CHECK_LIST)
                     .check(r -> StpUtil.checkRole(RoleEnum.ADMIN.getDesc()))
-                    .stop();
-
-                // 登录校验
-                SaRouter.match(LOGIN_CHECK_LIST)
-                    .check(r -> StpUtil.checkLogin())
                     .stop();
             })
             .setBeforeAuth(obj -> {

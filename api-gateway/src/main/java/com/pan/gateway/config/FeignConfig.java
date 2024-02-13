@@ -10,8 +10,6 @@ public class FeignConfig {
 
     @Bean("requestInterceptor")
     public RequestInterceptor requestInterceptor() {
-        return requestTemplate -> {
-            requestTemplate.header(GatewayConstant.REQ_SOURCE_KEY, GatewayConstant.REQ_SOURCE_VALUE);
-        };
+        return requestTemplate -> requestTemplate.header(GatewayConstant.REQ_SOURCE_KEY, GatewayConstant.REQ_SOURCE_VALUE);
     }
 }
