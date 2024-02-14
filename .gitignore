@@ -6,6 +6,7 @@ target/
 
 Dockerfile
 Dockerfile-**
+logs
 
 ### STS ###
 .apt_generated
