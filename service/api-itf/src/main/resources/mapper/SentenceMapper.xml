@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pan.itf.mapper.SentenceMapper">
+
+    <resultMap id="BaseResultMap" type="com.pan.itf.model.entity.Sentence">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="TINYINT"/>
+            <result property="creatorId" column="creator_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updaterId" column="updater_id" jdbcType="BIGINT"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,content,type,
+        creator_id,create_time,updater_id,
+        update_time,deleted
+    </sql>
+    
+    <select id="getContentFromOffset" resultType="java.lang.String">
+        select content
+        from sentence
+        where deleted = 0
+          and type = #{type}
+        limit 1 offset #{offset};
+    </select>
+</mapper>

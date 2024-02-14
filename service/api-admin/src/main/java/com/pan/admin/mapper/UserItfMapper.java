@@ -20,11 +20,11 @@ public interface UserItfMapper extends BaseMapper<UserItf> {
 
     void leftCountIncrement(@Param("itfId") long itfId, @Param("userId") long userId, @Param("count") int count);
 
-    int countInvoke();
+    Integer countInvoke();
 
     Integer countUserInvoke(@Param("userId") Long userId);
 
-    int countUserLeft(@Param("userId") Long userId);
+    Integer countUserLeft(@Param("userId") Long userId);
 
     List<StatisticsItfCountVO> selectInvokeTop10();
 

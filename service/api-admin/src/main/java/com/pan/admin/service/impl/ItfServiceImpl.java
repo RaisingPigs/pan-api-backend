@@ -127,7 +127,7 @@ public class ItfServiceImpl
 
         List<ParamVO> query = ParamVO.build(paramMap.get(ParamTypeEnum.QUERY));
         List<ParamVO> body = ParamVO.build(paramMap.get(ParamTypeEnum.BODY));
-        List<ParamVO> commonResp = ItfDetailsVO.getCommonResp();
+        List<ParamVO> commonResp = ItfDetailsVO.createCommonResp();
         List<ParamVO> respData = ParamVO.build(paramMap.get(ParamTypeEnum.RESP));
 
         Itf itf = getById(id);

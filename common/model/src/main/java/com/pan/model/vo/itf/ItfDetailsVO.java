@@ -31,7 +31,7 @@ public class ItfDetailsVO implements Serializable {
 
     private List<ParamVO> respData;
 
-    public static List<ParamVO> getCommonResp() {
+    public static List<ParamVO> createCommonResp() {
         ParamVO codeParamVO = new ParamVO(-1L, "code", RequiredEnum.REQUIRED, "number", "响应码, 20000-成功", null);
         ParamVO msgParamVO = new ParamVO(-2L, "msg", RequiredEnum.REQUIRED, "string", "响应消息", null);
         ParamVO dataParamVO = new ParamVO(-3L, "data", RequiredEnum.REQUIRED, "object", "响应数据", null);

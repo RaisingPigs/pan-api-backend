@@ -34,11 +34,6 @@ spring:
         max-idle: 10     #连接池中最大空闲连接数
         min-idle: 2     #连接池中最小空闲数
 
-  # 配置日期格式化
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss  #时间戳统一转换为指定格式
-    time-zone: GMT+8  # 时区修改为东8区
-
 management:
   endpoints:
     web:

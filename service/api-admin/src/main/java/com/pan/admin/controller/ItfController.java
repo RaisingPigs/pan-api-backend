@@ -3,10 +3,14 @@ package com.pan.admin.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pan.admin.service.ItfService;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
+import com.pan.common.resp.ResultUtils;
+import com.pan.common.util.JSONUtils;
 import com.pan.model.bo.itf.ItfInvokeBO;
 import com.pan.model.constant.PageConstant;
 import com.pan.model.converter.itf.ItfConverter;
@@ -38,6 +42,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ItfController {
     private final ItfService itfService;
+    private final ObjectMapper objectMapper;
 
     //region 增删改查
 
@@ -110,12 +115,13 @@ public class ItfController {
     }
 
     @GetMapping("/details/{id}")
-    public ItfDetailsVO getItfDetailsById(@PathVariable Long id) {
+    public BaseResponse<ItfDetailsVO> getItfDetailsById(@PathVariable Long id) throws JsonProcessingException {
         if (Objects.isNull(id) || id <= 0) {
             throw new BusinessException(ResultCode.PARAMS_ERR);
         }
 
-        return itfService.getItfDetailsById(id);
+        ItfDetailsVO itfDetails = itfService.getItfDetailsById(id);
+        return ResultUtils.success(itfDetails);
     }
 
 

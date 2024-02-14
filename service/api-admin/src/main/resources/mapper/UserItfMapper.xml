@@ -49,7 +49,6 @@
           and user_id = #{userId}
           and status = 0
           and deleted = 0
-          and left_count > 0
     </update>
     
     <select id="countInvoke"  resultType="java.lang.Integer">

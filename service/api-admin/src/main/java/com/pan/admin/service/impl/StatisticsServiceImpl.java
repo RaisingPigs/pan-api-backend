@@ -29,7 +29,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public int countInvoke() {
-        return userItfMapper.countInvoke();
+        Integer countedInvoke = userItfMapper.countInvoke();
+        return Optional.ofNullable(countedInvoke).orElse(0);
     }
 
     @Override
