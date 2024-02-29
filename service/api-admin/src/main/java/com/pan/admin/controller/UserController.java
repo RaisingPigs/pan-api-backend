@@ -4,11 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pan.admin.service.UserService;
-import com.pan.model.constant.PageConstant;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.resp.ResultUtils;
+import com.pan.common.util.AuthUtils;
+import com.pan.model.constant.PageConstant;
+import com.pan.model.converter.user.UserAkSkVOConverter;
 import com.pan.model.converter.user.UserConverter;
 import com.pan.model.converter.user.UserVOConverter;
 import com.pan.model.entity.User;
@@ -16,6 +18,7 @@ import com.pan.model.req.user.AccessKeyReq;
 import com.pan.model.req.user.UserAddReq;
 import com.pan.model.req.user.UserQueryReq;
 import com.pan.model.req.user.UserUpdateReq;
+import com.pan.model.vo.user.UserAkSkVO;
 import com.pan.model.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +45,7 @@ public class UserController {
     private final UserService userService;
 
     //region 增删改查
-    
+
     @PostMapping("/add")
     public BaseResponse<Long> addUser(
         @RequestBody UserAddReq userAddReq) {
@@ -61,7 +64,7 @@ public class UserController {
         return ResultUtils.success(user.getId());
     }
 
-    
+
     @DeleteMapping("/delete/{id}")
     public BaseResponse<Void> deleteUser(@PathVariable("id") Long id) {
         if (Objects.isNull(id) || id <= 0) {
@@ -81,7 +84,7 @@ public class UserController {
         return ResultUtils.success();
     }
 
-    
+
     @PutMapping("/update")
     public BaseResponse<Void> updateUser(
         @RequestBody UserUpdateReq userUpdateReq) {
@@ -105,7 +108,7 @@ public class UserController {
         return ResultUtils.success();
     }
 
-    
+
     @GetMapping("/get/{id}")
     public BaseResponse<UserVO> getUserById(
         @PathVariable("id")
@@ -118,7 +121,7 @@ public class UserController {
         return ResultUtils.success(userVO);
     }
 
-    
+
     @PostMapping("/list")
     public BaseResponse<List<UserVO>> listUser(
         @RequestBody UserQueryReq userQueryReq) {
@@ -134,7 +137,7 @@ public class UserController {
         return ResultUtils.success(userVOList);
     }
 
-    
+
     @PostMapping("/list/page")
     public BaseResponse<IPage<UserVO>> listUserByPage(
         @RequestBody UserQueryReq userQueryReq) {
@@ -192,5 +195,18 @@ public class UserController {
             .getSecretKey();
 
         return ResultUtils.success(secretKey);
+    }
+
+    @PostMapping("/ak-sk")
+    public BaseResponse<UserAkSkVO> getUserWithAkSk() {
+        Long id = AuthUtils.getLoginUserId();
+        User user = userService.getById(id);
+
+        if (user == null) {
+            throw new BusinessException(ResultCode.NULL_ERR, "用户不存在");
+        }
+
+        UserAkSkVO userAkSkVo = UserAkSkVOConverter.INSTANCE.toUserAkSkVo(user);
+        return ResultUtils.success(userAkSkVo);
     }
 }

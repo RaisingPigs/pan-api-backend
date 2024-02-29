@@ -31,7 +31,8 @@ public class SaTokenConfig {
     // admin下的接口需要登录才能访问
     private static final String[] LOGIN_CHECK_LIST = {
         "/api/admin/sys/logout",
-        "/api/admin/sys/user"
+        "/api/admin/sys/user",
+        "/api/admin/user/ak-sk"
     };
 
     private static final String[] ADMIN_CHECK_LIST = {
