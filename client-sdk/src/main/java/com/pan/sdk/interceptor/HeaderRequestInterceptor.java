@@ -7,17 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -35,23 +27,5 @@ public class HeaderRequestInterceptor implements ClientHttpRequestInterceptor {
         headers.put(HeaderConstant.CLIENT_KEY, Collections.singletonList(HeaderConstant.CLIENT_VAL));
 
         return execution.execute(request, body);
-    }
-
-
-    private List<String> getCookies() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-
-        if (requestAttributes == null) {
-            return null;
-        }
-
-        HttpServletRequest request = requestAttributes.getRequest();
-        Cookie[] cookies = request.getCookies();
-        if (Objects.isNull(cookies) || cookies.length == 0) {
-            return null;
-        }
-        return Arrays.stream(cookies)
-            .map(cookie -> cookie.getName() + "=" + cookie.getValue())
-            .collect(Collectors.toList());
     }
 }

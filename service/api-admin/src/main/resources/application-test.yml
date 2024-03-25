@@ -81,3 +81,15 @@ pan-api:
   client:
     access-key: ${PAN_API_AK:admin}
     secret-key: ${PAN_API_SK:admin}
+    
+login:
+  gitee:
+    client-id: ${LOGIN_GITEE_CLIENT_ID}
+    client-secret: ${LOGIN_GITEE_CLIENT_SECRET}
+    state: GITEE
+    username-prefix: ${login.gitee.state}@
+    callback-url: http://localhost:3333/login3rd-loading
+    encoded-callback-url: http%3A%2F%2Flocalhost%3A3333%2Flogin3rd-loading
+    login-url: https://gitee.com/oauth/authorize?client_id=${login.gitee.client-id}&redirect_uri=${login.gitee.encoded-callback-url}&response_type=code&state=${login.gitee.state}
+    token-url: https://gitee.com/oauth/token?grant_type=authorization_code&client_id=${login.gitee.client-id}&client_secret=${login.gitee.client-secret}&redirect_uri=${login.gitee.callback-url}&code={code}
+    user-url: https://gitee.com/api/v5/user?access_token={token}

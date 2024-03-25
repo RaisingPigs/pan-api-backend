@@ -16,20 +16,16 @@ import java.util.List;
  * @create: 2023-02-22 14:12
  **/
 public class RestTemplateUtils {
-    public static RestTemplate getRestTemplate() {
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        interceptors.add(new HeaderRequestInterceptor());
+    private static final RestTemplate REST_TEMPLATE;
 
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setInterceptors(interceptors);
-
-        changeMessageConverter2UTF8(restTemplate);
-
-        return restTemplate;
+    static {
+        REST_TEMPLATE = new RestTemplate();
+        setInterceptors();
+        changeMessageConverter2UTF8();
     }
 
-    private static void changeMessageConverter2UTF8(RestTemplate restTemplate) {
-        List<HttpMessageConverter<?>> list = restTemplate.getMessageConverters();
+    private static void changeMessageConverter2UTF8() {
+        List<HttpMessageConverter<?>> list = REST_TEMPLATE.getMessageConverters();
         for (HttpMessageConverter<?> httpMessageConverter : list) {
             if (httpMessageConverter instanceof StringHttpMessageConverter) {
                 ((StringHttpMessageConverter) httpMessageConverter).setDefaultCharset(StandardCharsets.UTF_8);
@@ -37,4 +33,16 @@ public class RestTemplateUtils {
             }
         }
     }
+
+    private static void setInterceptors() {
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        interceptors.add(new HeaderRequestInterceptor());
+        REST_TEMPLATE.setInterceptors(interceptors);
+    }
+
+    public static RestTemplate getRestTemplate() {
+        return REST_TEMPLATE;
+    }
+
+
 }

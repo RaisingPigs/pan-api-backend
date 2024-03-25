@@ -1,6 +1,5 @@
 package com.pan.model.vo.user;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.pan.model.enums.user.GenderEnum;
 import com.pan.model.enums.user.RoleEnum;
 import lombok.Data;
@@ -44,7 +43,7 @@ public class UserAkSkVO implements Serializable {
     private String accessKey;
 
     private String secretKey;
-    
+
     /**
      * 创建时间
      */

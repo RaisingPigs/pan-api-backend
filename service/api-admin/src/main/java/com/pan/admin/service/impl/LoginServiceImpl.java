@@ -2,13 +2,13 @@ package com.pan.admin.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.pan.model.constant.UserConstant;
 import com.pan.admin.service.LoginService;
 import com.pan.admin.service.UserService;
-import com.pan.common.util.AuthUtils;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.util.AkSkUtils;
+import com.pan.common.util.AuthUtils;
+import com.pan.model.constant.UserConstant;
 import com.pan.model.converter.user.UserDTOConverter;
 import com.pan.model.dto.user.UserDTO;
 import com.pan.model.entity.User;
@@ -46,11 +46,9 @@ public class LoginServiceImpl implements LoginService {
         }
 
         synchronized (username.intern()) {
-            long count = userService.lambdaQuery().eq(User::getUsername, username).count();
-            if (count > 0) {
+            if (checkUserExists(username)) {
                 throw new BusinessException(ResultCode.SAVE_ERR, "该用户名已被使用");
             }
-
 
             /*生成ak, sk*/
             String accessKey = AkSkUtils.getAccessKey(username, UserConstant.SALT);
@@ -80,6 +78,12 @@ public class LoginServiceImpl implements LoginService {
             return user.getId();
         }
 
+    }
+
+    protected boolean checkUserExists(String username) {
+        long count = userService.lambdaQuery().eq(User::getUsername, username).count();
+
+        return count > 0;
     }
 
     @Override
@@ -113,6 +117,5 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public void userLogout() {
         StpUtil.logout();
-
     }
 }

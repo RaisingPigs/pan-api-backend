@@ -26,6 +26,8 @@ ENV REDIS_POST 6379
 ENV REDIS_PWD root
 ENV PAN_API_AK admin
 ENV PAN_API_SK admin
+ENV LOGIN_GITEE_CLIENT_ID xxxxxx
+ENV LOGIN_GITEE_CLIENT_SECRET xxxxxx
 
 ENTRYPOINT ["java","-Xms64m","-Xmx64m","-jar","/app.jar","--spring.profiles.active=test"]
 
