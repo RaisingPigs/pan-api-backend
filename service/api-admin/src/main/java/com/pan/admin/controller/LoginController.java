@@ -2,7 +2,7 @@ package com.pan.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.collection.ListUtil;
-import com.pan.admin.config.GiteeLoginConfig;
+import com.pan.admin.handler.GiteeLoginHandler;
 import com.pan.admin.service.LoginBy3rd;
 import com.pan.admin.service.LoginService;
 import com.pan.common.exception.BusinessException;
@@ -25,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +40,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class LoginController {
     private final LoginBy3rd loginBy3rd;
-    private final GiteeLoginConfig giteeLoginConfig;
+    private final GiteeLoginHandler giteeLoginHandler;
     @Resource(name = "loginServiceImpl")
     private LoginService loginService;
 
@@ -75,7 +74,7 @@ public class LoginController {
 
     @GetMapping("/login/3rd-url")
     public BaseResponse<List<ThirdUrlVO>> getThirdLoginUrl() {
-        String giteeLoginUrl = giteeLoginConfig.getLoginUrl();
+        String giteeLoginUrl = giteeLoginHandler.getLoginUrl();
 
         ThirdUrlVO thirdUrlVO = new ThirdUrlVO(TypeEnum.GITEE, giteeLoginUrl);
         List<ThirdUrlVO> list = ListUtil.toList(thirdUrlVO);
@@ -86,14 +85,11 @@ public class LoginController {
     @PostMapping("/login/gitee")
     public BaseResponse<String> userLoginByGitee(
         @RequestBody @Validated GiteeLoginReq giteeLoginReq) {
-        String code = giteeLoginReq.getCode();
-        String state = giteeLoginReq.getState();
-
-        if (!Objects.equals(giteeLoginConfig.getState(), state)) {
+        if (!Objects.equals(giteeLoginHandler.getState(), giteeLoginReq.getState())) {
             throw new BusinessException(ResultCode.PARAMS_ERR);
         }
 
-        String token = loginBy3rd.userLoginByGitee(state, code);
+        String token = loginBy3rd.userLoginByGitee(giteeLoginReq.getCode());
         return ResultUtils.success(token);
     }
 
