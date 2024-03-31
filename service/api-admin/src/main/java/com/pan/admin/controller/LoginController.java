@@ -1,8 +1,8 @@
 package com.pan.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.hutool.core.collection.ListUtil;
 import com.pan.admin.annotation.LoginLog;
+import com.pan.admin.factory.LoginBy3rdUrlFactory;
 import com.pan.admin.handler.GiteeLoginHandler;
 import com.pan.admin.service.LoginBy3rd;
 import com.pan.admin.service.LoginService;
@@ -17,7 +17,6 @@ import com.pan.model.enums.login.Type;
 import com.pan.model.req.login.GiteeLoginReq;
 import com.pan.model.req.user.UserLoginReq;
 import com.pan.model.req.user.UserRegisterReq;
-import com.pan.model.vo.login.ThirdUrlVO;
 import com.pan.model.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -74,14 +73,12 @@ public class LoginController {
         return ResultUtils.success(token);
     }
 
-    @GetMapping("/login/3rd-url")
-    public BaseResponse<List<ThirdUrlVO>> getThirdLoginUrl() {
-        String giteeLoginUrl = giteeLoginHandler.getLoginUrl();
+    @GetMapping("/login/3rd-url/{type}")
+    public BaseResponse<String> getThirdLoginUrl(
+        @PathVariable("type") @NotNull Integer type) {
+        String giteeLoginUrl = LoginBy3rdUrlFactory.getUrl(type);
 
-        ThirdUrlVO thirdUrlVO = new ThirdUrlVO(Type.GITEE, giteeLoginUrl);
-        List<ThirdUrlVO> list = ListUtil.toList(thirdUrlVO);
-
-        return ResultUtils.success(list);
+        return ResultUtils.success(giteeLoginUrl);
     }
 
     @LoginLog(loginType = Type.GITEE)

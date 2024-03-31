@@ -2,6 +2,8 @@ package com.pan.admin.handler;
 
 import cn.hutool.core.map.MapUtil;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.pan.admin.factory.LoginBy3rdUrlFactory;
+import com.pan.model.enums.login.Type;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -9,6 +11,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.PostConstruct;
 
 /**
  * @description:
@@ -58,5 +62,10 @@ public class GiteeLoginHandler {
         Assert.notNull(userResp, "userResp为null");
 
         return userResp.get("name").asText();
+    }
+
+    @PostConstruct
+    public void addUrl2Factory() {
+        LoginBy3rdUrlFactory.add(Type.GITEE, getLoginUrl());
     }
 }

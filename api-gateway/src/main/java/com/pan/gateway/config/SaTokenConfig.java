@@ -25,7 +25,7 @@ import java.util.Objects;
 public class SaTokenConfig {
     private static final String[] GLOBAL_WHITE_LIST = {
         "/api/admin/sys/login",
-        "/api/admin/sys/login/3rd-url",
+        "/api/admin/sys/login/3rd-url/**",
         "/api/admin/sys/login/gitee",
         "/api/admin/sys/login/qq",
         "/api/admin/sys/register"
