@@ -5,16 +5,15 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.pan.admin.annotation.LoginLog;
 import com.pan.admin.event.LoginLogEvent;
-import com.pan.admin.service.SysLoginLogService;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.util.AuthUtils;
 import com.pan.common.util.EventPublishUtils;
+import com.pan.model.constant.RequestConstant;
 import com.pan.model.dto.user.UserDTO;
 import com.pan.model.entity.SysLoginLog;
 import com.pan.model.enums.login.State;
 import com.pan.model.enums.login.Type;
 import com.pan.sdk.util.SpelUtils;
-import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -35,18 +34,13 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Aspect
 @Component
-@RequiredArgsConstructor
 public class LoginLogAop {
-    private static final String USER_AGENT = "User-Agent";
-
-    private final SysLoginLogService sysLoginLogService;
-
-    @Pointcut("@annotation(loginLog)")
+    @Pointcut(value = "@annotation(loginLog)", argNames = "loginLog")
     public void loginLogAspect(LoginLog loginLog) {
     }
 
     @AfterReturning(value = "loginLogAspect(loginLog)", argNames = "joinPoint,loginLog,returnValue", returning = "returnValue")
-    public void doAfterReturning(JoinPoint joinPoint, LoginLog loginLog, BaseResponse<String> returnValue) {
+    public void doAfterReturning(JoinPoint joinPoint, LoginLog loginLog, BaseResponse<?> returnValue) {
         UserDTO loginUser = AuthUtils.getLoginUser();
         Long userId = loginUser.getId();
         String username = loginUser.getUsername();
@@ -76,7 +70,7 @@ public class LoginLogAop {
 
         Type loginType = loginLog.loginType();
         String ip = ServletUtil.getClientIP(request);
-        UserAgent userAgent = UserAgentUtil.parse(request.getHeader(USER_AGENT));
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeader(RequestConstant.USER_AGENT));
         String browser = userAgent.getBrowser().getName();
         String os = userAgent.getOs().getName();
 

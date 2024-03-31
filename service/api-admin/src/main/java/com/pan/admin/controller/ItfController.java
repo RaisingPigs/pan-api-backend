@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pan.admin.annotation.OperationLog;
 import com.pan.admin.service.ItfService;
 import com.pan.common.exception.BusinessException;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.resp.ResultCode;
 import com.pan.common.resp.ResultUtils;
-import com.pan.common.util.JSONUtils;
 import com.pan.model.bo.itf.ItfInvokeBO;
 import com.pan.model.constant.PageConstant;
 import com.pan.model.converter.itf.ItfConverter;
@@ -18,6 +18,7 @@ import com.pan.model.converter.itf.ItfVOConverter;
 import com.pan.model.entity.Itf;
 import com.pan.model.enums.itf.MethodEnum;
 import com.pan.model.enums.itf.StatusEnum;
+import com.pan.model.enums.operation.BusinessType;
 import com.pan.model.req.itf.*;
 import com.pan.model.vo.itf.ItfDetailsVO;
 import com.pan.model.vo.itf.ItfVO;
@@ -234,6 +235,11 @@ public class ItfController {
     }
     //endregion
 
+    @OperationLog(
+        businessType = BusinessType.SELECT,
+        reqMethod = MethodEnum.POST,
+        reqModule = "itf"
+    )
     @PostMapping("/invoke")
     public BaseResponse<?> invokeItf(
         @RequestBody ItfInvokeReq itfInvokeReq) {
