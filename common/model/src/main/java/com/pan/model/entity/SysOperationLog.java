@@ -87,5 +87,7 @@ public class SysOperationLog extends BaseEntity {
         this.operatorIp = operatorIp;
         this.reqParam = reqParam;
         this.reqResult = reqResult;
+        setCreatorId(this.operatorId);
+        setUpdaterId(this.operatorId);
     }
 }
