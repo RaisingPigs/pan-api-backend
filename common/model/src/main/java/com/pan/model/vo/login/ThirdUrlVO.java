@@ -1,6 +1,6 @@
 package com.pan.model.vo.login;
 
-import com.pan.model.enums.login.TypeEnum;
+import com.pan.model.enums.login.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThirdUrlVO {
-    private TypeEnum loginType;
+    private Type loginType;
     private String loginUrl;
 }

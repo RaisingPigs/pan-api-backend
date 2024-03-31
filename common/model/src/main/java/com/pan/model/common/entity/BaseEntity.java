@@ -20,13 +20,13 @@ public class BaseEntity implements Serializable {
     @TableField(value = "creator_id", fill = FieldFill.INSERT)
     private Long creatorId;
 
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @TableField(value = "create_time")
     private LocalDateTime createTime;
 
-    @TableField(value = "updater_id", fill = FieldFill.INSERT)
+    @TableField(value = "updater_id", fill = FieldFill.INSERT_UPDATE)
     private Long updaterId;
 
-    @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_time")
     private LocalDateTime updateTime;
 
     /**

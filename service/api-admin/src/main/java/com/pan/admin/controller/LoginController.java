@@ -2,6 +2,7 @@ package com.pan.admin.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.collection.ListUtil;
+import com.pan.admin.annotation.LoginLog;
 import com.pan.admin.handler.GiteeLoginHandler;
 import com.pan.admin.service.LoginBy3rd;
 import com.pan.admin.service.LoginService;
@@ -12,7 +13,7 @@ import com.pan.common.resp.ResultUtils;
 import com.pan.common.util.AuthUtils;
 import com.pan.model.converter.user.UserVOConverter;
 import com.pan.model.dto.user.UserDTO;
-import com.pan.model.enums.login.TypeEnum;
+import com.pan.model.enums.login.Type;
 import com.pan.model.req.login.GiteeLoginReq;
 import com.pan.model.req.user.UserLoginReq;
 import com.pan.model.req.user.UserRegisterReq;
@@ -62,6 +63,7 @@ public class LoginController {
         return ResultUtils.success(id);
     }
 
+    @LoginLog(loginType = Type.DEFAULT, username = "#userLoginReq.username")
     @PostMapping("/login")
     public BaseResponse<String> userLogin(
         @RequestBody @Validated UserLoginReq userLoginReq) {
@@ -76,12 +78,13 @@ public class LoginController {
     public BaseResponse<List<ThirdUrlVO>> getThirdLoginUrl() {
         String giteeLoginUrl = giteeLoginHandler.getLoginUrl();
 
-        ThirdUrlVO thirdUrlVO = new ThirdUrlVO(TypeEnum.GITEE, giteeLoginUrl);
+        ThirdUrlVO thirdUrlVO = new ThirdUrlVO(Type.GITEE, giteeLoginUrl);
         List<ThirdUrlVO> list = ListUtil.toList(thirdUrlVO);
 
         return ResultUtils.success(list);
     }
 
+    @LoginLog(loginType = Type.GITEE)
     @PostMapping("/login/gitee")
     public BaseResponse<String> userLoginByGitee(
         @RequestBody @Validated GiteeLoginReq giteeLoginReq) {

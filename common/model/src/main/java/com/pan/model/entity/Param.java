@@ -19,7 +19,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName(value = "param")
-public class Param extends BaseEntity implements Serializable {
+public class Param extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
