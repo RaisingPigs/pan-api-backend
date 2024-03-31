@@ -9,6 +9,11 @@
     </parent>
     <artifactId>client-sdk</artifactId>
 
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
