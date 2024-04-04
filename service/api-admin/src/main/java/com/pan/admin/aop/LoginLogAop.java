@@ -13,7 +13,7 @@ import com.pan.model.dto.user.UserDTO;
 import com.pan.model.entity.SysLoginLog;
 import com.pan.model.enums.login.State;
 import com.pan.model.enums.login.Type;
-import com.pan.sdk.util.SpelUtils;
+import com.pan.common.util.SpelUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -58,7 +58,7 @@ public class LoginLogAop {
 
         String username = SpelUtils.parse(loginLog.username(), paramNames, paramValues);
 
-        SysLoginLog sysLoginLog = createSysLoginLog(null, username, loginLog, State.SUCCESS, e.getMessage());
+        SysLoginLog sysLoginLog = createSysLoginLog(null, username, loginLog, State.FAILED, e.getMessage());
 
         EventPublishUtils.publishEvent(new LoginLogEvent<>(this, sysLoginLog));
     }

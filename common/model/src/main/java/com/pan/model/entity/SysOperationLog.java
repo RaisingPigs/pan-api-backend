@@ -9,6 +9,7 @@ import com.pan.model.enums.itf.MethodEnum;
 import com.pan.model.enums.operation.BusinessType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * 操作日志记录
@@ -17,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "sys_operation_log")
+@NoArgsConstructor
 public class SysOperationLog extends BaseEntity {
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

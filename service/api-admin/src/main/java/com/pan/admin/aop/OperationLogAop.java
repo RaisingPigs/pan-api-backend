@@ -1,12 +1,12 @@
 package com.pan.admin.aop;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import com.alibaba.nacos.common.utils.JacksonUtils;
 import com.pan.admin.annotation.OperationLog;
 import com.pan.admin.event.OperationLogEvent;
 import com.pan.common.resp.BaseResponse;
 import com.pan.common.util.AuthUtils;
 import com.pan.common.util.EventPublishUtils;
+import com.pan.common.util.JSONUtils;
 import com.pan.model.dto.user.UserDTO;
 import com.pan.model.entity.SysOperationLog;
 import com.pan.model.enums.itf.MethodEnum;
@@ -37,7 +37,7 @@ public class OperationLogAop {
 
     @AfterReturning(value = "operationLogAspect(operationLog)", argNames = "joinPoint,operationLog,returnValue", returning = "returnValue")
     public void doAfterReturning(JoinPoint joinPoint, OperationLog operationLog, BaseResponse<?> returnValue) {
-        SysOperationLog sysOperationLog = createSysOperationLog(joinPoint, operationLog, JacksonUtils.toJson(returnValue));
+        SysOperationLog sysOperationLog = createSysOperationLog(joinPoint, operationLog, JSONUtils.toJsonStr(returnValue));
         EventPublishUtils.publishEvent(new OperationLogEvent<>(this, sysOperationLog));
     }
 
@@ -61,7 +61,7 @@ public class OperationLogAop {
 
         String ip = ServletUtil.getClientIP(request);
 
-        String reqParam = JacksonUtils.toJson(joinPoint.getArgs());
+        String reqParam = JSONUtils.toJsonStr(joinPoint.getArgs());
 
         return new SysOperationLog(businessType, reqMethod, reqModule, url, callMethod, loginUser.getId(), loginUser.getUsername(), ip, reqParam, reqResult);
     }
